@@ -1,29 +1,45 @@
 <script setup>
-import { ref } from 'vue';
+// Importamos funciones ref y computed de Vue:
+import { ref, computed } from 'vue';
+// Importamos componente hijo contacto:
 import contacto from './components/contacto.vue';
 
-//Creamos las variable para almacenar el nombre y numero:
-const contactes = ref([])
+//Creamos las var para guardar:
+const contactes = ref([]);
+const searchQuery = ref(''); 
 
-// Funció per gestionar l'enviament del formulari
+// Gestionamos el envío del formulario y añadimos contacto:
 const afegirContacte = (nouContacte) => {
-  contactes.value.push(nouContacte)
-}
+  contactes.value.push(nouContacte); //Añadimos el contacto al array 
+};
+
+// Filtrar con computed los contactos por nombre:
+const filteredContactes = computed(() => {
+  return contactes.value.filter(contacte => 
+    contacte.nom.toLowerCase().includes(searchQuery.value.toLowerCase()) // Filtramos contactos
+  );
+});
 </script>
 
 <template>
-  <!-- Incluimos el componente hijo -->
+  <!-- Incluimos el componente hijo: -->
   <contacto @afegirContacte="afegirContacte" />
 
-  <!-- Mostrar la lista de contactos -->
+  <!-- Input para buscar por nombre: -->
+  <div>
+    <label for="search">Buscar por nombre:</label>
+    <input id="search" type="text" v-model="searchQuery" placeholder="Buscar contactos..." />
+  </div>
+
+  <!-- Mostramos la lista de contactos filtrados: -->
   <h2>Contactos añadidos:</h2>
   <ul>
-    <li v-for="(contacte, index) in contactes" :key="index">
-      {{ contacte.nom }} - 
+    <!-- Con for mostramos la lista, poco a poco: -->
+    <li v-for="(contacte, index) in filteredContactes" :key="index">
+      {{ contacte.nom }}
       <a :href="'tel:' + contacte.telefon">{{ contacte.telefon }}</a>
     </li>
   </ul>
-
 </template>
 
 

@@ -1,29 +1,27 @@
 <script setup>
-import { ref } from 'vue';
-//Definimos los props y el emit para comunicar con el padre
-const emit = defineEmits(['afegirContacte'])
+import { ref } from 'vue';// Importamos la función 'ref' de Vue para crear variables reactivas
 
+//Definimos props y el emits para comunicar con el padre
+const emit = defineEmits(['afegirContacte']) // Emitimos evento 'afegirContacte' que el padre puede escuchar
+
+//Creamos las variables para guardar nombre y telf.:
 const nom = ref('')
 const telefon = ref('')
 
-
-// Función para enviar los datos al componente padre
+// Creamos función para enviar datos al padre
 const submitContacte = () => {
-  if (nom.value && telefon.value) {
-    console.log('Nuevo contacto:', { nom: nom.value, telefon: telefon.value });
-    emit('afegirContacte', { nom: nom.value, telefon: telefon.value });
-    nom.value = '';
-    telefon.value = '';
-  }
+  console.log('Nuevo contacto:', { nom: nom.value, telefon: telefon.value });
+  emit('afegirContacte', { nom: nom.value, telefon: telefon.value });
+  nom.value = ''; // Dejamos vacio el campo
+  telefon.value = ''; // Dejamos vacio el campo
 }
-
 </script>
 
 <template>
   <form @submit.prevent="submitContacte" >
     <div>
         <label for="nom">Nombre:</label>
-        <input id='nom' type="text" v-model="nom">
+        <input id='nom' type="text" v-model="nom"> 
     </div>
     <div>
       <label for="telefon">Número de teléfono:</label>
