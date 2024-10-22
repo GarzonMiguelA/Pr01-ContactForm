@@ -1,21 +1,32 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ref } from 'vue';
+import contacto from './components/contacto.vue';
+
+//Creamos las variable para almacenar el nombre y numero:
+const contactes = ref([])
+
+// Funció per gestionar l'enviament del formulari
+const afegirContacte = (nouContacte) => {
+  contactes.value.push(nouContacte)
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <!-- Incluimos el componente hijo -->
+  <contacto @afegirContacte="afegirContacte" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+  <!-- Mostrar la lista de contactos -->
+  <h2>Contactos añadidos:</h2>
+  <ul>
+    <li v-for="(contacte, index) in contactes" :key="index">
+      {{ contacte.nom }} - 
+      <a :href="'tel:' + contacte.telefon">{{ contacte.telefon }}</a>
+    </li>
+  </ul>
 
-  <main>
-    <TheWelcome />
-  </main>
 </template>
+
+
 
 <style scoped>
 header {
